@@ -1,11 +1,5 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "api/main.py",
-      "use": "@vercel/python"
-    }
-  ],
   "routes": [
     {
       "src": "/(.*)",
@@ -20,7 +14,7 @@
   "crons": [
     {
       "path": "/api/cron-export",
-      "schedule": "*/15 * * * *"
+      "schedule": "0 17 * * *"
     }
   ]
 }

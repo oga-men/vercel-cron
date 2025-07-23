@@ -1,18 +1,17 @@
 # Vercel Cron CSV Export System
 
-15分間隔で来店客数データをCSV形式でFTP送信するシステムです。
+毎日17時に来店客数データをCSV形式でFTP送信するシステムです。
 
 ## プロジェクト構成
 
 ```
 /vercel-cron/
 ├── api/
-│   ├── main.py          # FastAPIメインアプリケーション
-│   └── cron-export.py   # Cronエンドポイント
+│   └── main.py          # FastAPIメインアプリケーション（全エンドポイント統合）
 ├── services/
 │   ├── csv_generator.py # CSV生成機能（サンプルデータ）
 │   └── ftp_client.py    # FTP送信機能
-├── vercel.json          # Vercel設定（15分間隔Cron）
+├── vercel.json          # Vercel設定（毎日17時Cron実行）
 ├── requirements.txt     # Python依存関係
 ├── .env.example         # 環境変数テンプレート
 └── README.md            # このファイル
@@ -20,9 +19,9 @@
 
 ## 機能
 
-- **自動CSV生成**: 15分間隔の来店客数データをサンプル生成
+- **自動CSV生成**: 来店客数データのサンプル生成（時間帯・曜日を考慮）
 - **FTP送信**: 生成されたCSVファイルをFTPサーバーに自動送信
-- **Cron実行**: Vercel Cron Jobsで15分間隔での自動実行
+- **Cron実行**: Vercel Cron Jobsで毎日17時に自動実行
 - **ログ出力**: 処理状況の詳細ログ
 - **エラーハンドリング**: FTP接続エラーなどの適切な処理
 
@@ -95,14 +94,14 @@ curl -X GET https://your-app.vercel.app/api/manual-export
 
 ## Cron設定
 
-`vercel.json`で15分間隔の実行を設定：
+`vercel.json`で毎日17時の実行を設定：
 
 ```json
 {
   "crons": [
     {
       "path": "/api/cron-export",
-      "schedule": "*/15 * * * *"
+      "schedule": "0 17 * * *"
     }
   ]
 }
@@ -120,9 +119,10 @@ timestamp,date,time,visitor_count,day_of_week,hour
 ## 注意事項
 
 - Vercel Cron Jobsは本番環境でのみ動作します
-- ホビープランでは1日2回までの制限があります
+- ホビープランでは1日2回までの制限があります（このアプリは1日1回実行）
 - FTP認証情報は環境変数で安全に管理してください
 - タイムアウト設定は60秒に設定されています
+- Cronは毎日17時（UTC）に実行されます
 
 ## ログ確認
 
