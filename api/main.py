@@ -30,7 +30,7 @@ async def root():
 async def health_check():
     return {"status": "healthy", "service": "csv-export-api"}
 
-@app.post("/api/cron-export")
+@app.get("/api/cron-export")
 async def cron_csv_export():
     """
     来店客数データの自動送信エンドポイント
@@ -170,10 +170,3 @@ async def manual_csv_export():
     """
     return await cron_csv_export()
 
-@app.get("/api/health")
-async def api_health_check():
-    return {
-        "status": "healthy",
-        "service": "cron-export-api",
-        "timestamp": datetime.now(pytz.timezone('Asia/Tokyo')).isoformat()
-    }
