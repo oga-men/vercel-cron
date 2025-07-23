@@ -4,6 +4,7 @@ import logging
 import os
 from datetime import datetime
 import sys
+import pytz
 
 # パスを追加してservicesモジュールをインポート
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -60,7 +61,7 @@ async def cron_csv_export():
                     "status": "success",
                     "message": "CSV export completed successfully",
                     "filename": filename,
-                    "timestamp": datetime.now().isoformat(),
+                    "timestamp": datetime.now(pytz.timezone('Asia/Tokyo')).isoformat(),
                     "upload_details": upload_result
                 }
             )
@@ -72,7 +73,7 @@ async def cron_csv_export():
                     "status": "error",
                     "message": "CSV export failed",
                     "filename": filename,
-                    "timestamp": datetime.now().isoformat(),
+                    "timestamp": datetime.now(pytz.timezone('Asia/Tokyo')).isoformat(),
                     "error_details": upload_result
                 }
             )
@@ -85,7 +86,7 @@ async def cron_csv_export():
             content={
                 "status": "error",
                 "message": error_msg,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": datetime.now(pytz.timezone('Asia/Tokyo')).isoformat()
             }
         )
 
@@ -174,5 +175,5 @@ async def api_health_check():
     return {
         "status": "healthy",
         "service": "cron-export-api",
-        "timestamp": datetime.now().isoformat()
+        "timestamp": datetime.now(pytz.timezone('Asia/Tokyo')).isoformat()
     }

@@ -3,6 +3,7 @@ import io
 from datetime import datetime, timedelta
 import random
 from typing import List, Dict
+import pytz
 
 class VisitorDataGenerator:
     def __init__(self):
@@ -24,7 +25,8 @@ class VisitorDataGenerator:
             List[Dict]: 来店客数データのリスト
         """
         data = []
-        current_time = datetime.now()
+        jst = pytz.timezone('Asia/Tokyo')
+        current_time = datetime.now(jst)
         
         # 15分間隔で過去のデータを生成（本来の要件に合わせて）
         for i in range(hours_back * 4):  # 1時間 = 4回（15分間隔）
@@ -83,7 +85,8 @@ class VisitorDataGenerator:
         Returns:
             Dict: 現在の来店客数データ
         """
-        current_time = datetime.now()
+        jst = pytz.timezone('Asia/Tokyo')
+        current_time = datetime.now(jst)
         # 15分単位に切り下げ（本来の15分間隔要件に合わせて）
         minutes = (current_time.minute // 15) * 15
         adjusted_time = current_time.replace(minute=minutes, second=0, microsecond=0)
@@ -136,5 +139,6 @@ def generate_filename() -> str:
     Returns:
         str: ファイル名
     """
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M")
+    jst = pytz.timezone('Asia/Tokyo')
+    timestamp = datetime.now(jst).strftime("%Y%m%d_%H%M")
     return f"visitor_data_{timestamp}.csv"
