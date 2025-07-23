@@ -16,8 +16,8 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = FastAPI(
-    title="Vercel Cron CSV Export API",
-    description="15分間隔で来店客数データをCSV形式でFTP送信するAPI",
+    title="来店客数データ自動送信API",
+    description="店舗の来店客数データをCSV形式でFTP送信するAPI（現在は毎日17時実行、本来は15分間隔予定）",
     version="1.0.0"
 )
 
@@ -32,8 +32,9 @@ async def health_check():
 @app.post("/api/cron-export")
 async def cron_csv_export():
     """
-    Vercel Cronから15分間隔で呼び出されるエンドポイント
-    来店客数データをCSV生成してFTP送信する
+    来店客数データの自動送信エンドポイント
+    現在は毎日17時に実行（Vercel Hobbyプラン制限）
+    本来は15分間隔での実行を想定
     """
     try:
         logger.info("Starting CSV export cron job")
@@ -130,7 +131,7 @@ async def test_ftp_connection():
 @app.get("/api/generate-sample-csv")
 async def generate_sample_csv():
     """
-    サンプルCSVデータの生成・確認用エンドポイント
+    来店客数データのサンプル生成・確認用エンドポイント
     """
     try:
         # 現在のデータを生成
@@ -163,8 +164,8 @@ async def generate_sample_csv():
 @app.get("/api/manual-export")
 async def manual_csv_export():
     """
-    手動でCSVエクスポートを実行するエンドポイント
-    テスト・デバッグ用
+    手動での来店客数データ送信エンドポイント
+    テスト・デバッグ・緊急時用
     """
     return await cron_csv_export()
 

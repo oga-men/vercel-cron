@@ -15,7 +15,7 @@ class VisitorDataGenerator:
     
     def generate_sample_data(self, hours_back: int = 24) -> List[Dict]:
         """
-        過去指定時間分の15分間隔来店客数データを生成
+        過去指定時間分の来店客数データを生成（15分間隔）
         
         Args:
             hours_back: 何時間前からのデータを生成するか
@@ -26,7 +26,7 @@ class VisitorDataGenerator:
         data = []
         current_time = datetime.now()
         
-        # 15分間隔で過去のデータを生成
+        # 15分間隔で過去のデータを生成（本来の要件に合わせて）
         for i in range(hours_back * 4):  # 1時間 = 4回（15分間隔）
             timestamp = current_time - timedelta(minutes=15 * i)
             visitor_count = self._calculate_visitor_count(timestamp)
@@ -84,7 +84,7 @@ class VisitorDataGenerator:
             Dict: 現在の来店客数データ
         """
         current_time = datetime.now()
-        # 15分単位に切り下げ
+        # 15分単位に切り下げ（本来の15分間隔要件に合わせて）
         minutes = (current_time.minute // 15) * 15
         adjusted_time = current_time.replace(minute=minutes, second=0, microsecond=0)
         
