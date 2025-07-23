@@ -3,24 +3,10 @@
   "builds": [
     {
       "src": "api/main.py",
-      "use": "@vercel/python",
-      "config": {
-        "runtime": "python3.9"
-      }
-    },
-    {
-      "src": "api/cron-export.py",
-      "use": "@vercel/python",
-      "config": {
-        "runtime": "python3.9"
-      }
+      "use": "@vercel/python"
     }
   ],
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "api/cron-export.py"
-    },
     {
       "src": "/(.*)",
       "dest": "api/main.py"
@@ -28,9 +14,6 @@
   ],
   "functions": {
     "api/main.py": {
-      "maxDuration": 30
-    },
-    "api/cron-export.py": {
       "maxDuration": 60
     }
   },
@@ -39,8 +22,5 @@
       "path": "/api/cron-export",
       "schedule": "*/15 * * * *"
     }
-  ],
-  "env": {
-    "PYTHONPATH": "$PYTHONPATH:."
-  }
+  ]
 }
